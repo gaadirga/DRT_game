@@ -1,0 +1,1158 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090d1c">
+<title>Ular Naga — DRT</title>
+
+<style>
+:root {
+  color-scheme: light dark;
+  --bg: light-dark(#f0f4ff, #090d1c);
+  --panel: light-dark(#ffffff, #11182c);
+  --panel2: light-dark(#f4f6ff, #151e35);
+  --text: light-dark(#16203a, #f4f7ff);
+  --muted: light-dark(#6e7895, #8d9abb);
+  --line: light-dark(#dce4fa, #26314f);
+  --cyan: #53f4df;
+  --violet: #a78bfa;
+  --pink: #ff73b7;
+  --yellow: #ffd66b;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, system-ui, sans-serif;
+  min-height: 100vh;
+}
+
+button { font: inherit; cursor: pointer; }
+
+button:focus-visible {
+  outline: 3px solid var(--cyan);
+  outline-offset: 3px;
+}
+
+.app {
+  min-height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 10% 0%, #5d4be51c, transparent 36%),
+    radial-gradient(ellipse at 100% 80%, #22d9cb12, transparent 30%),
+    var(--bg);
+}
+
+/* LOADING SCREEN */
+
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: #090d1c;
+  display: grid;
+  place-items: center;
+  transition: opacity .7s, visibility .7s;
+}
+
+.loader.done {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.load-inner {
+  text-align: center;
+  width: min(340px, 85vw);
+}
+
+.logo-mark {
+  width: 82px;
+  height: 82px;
+  margin: 0 auto 22px;
+  border-radius: 26px;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(135deg, #55f4df, #8e7bff);
+  box-shadow: 0 0 55px #53f4df45;
+  transform: rotate(-7deg);
+  font-size: 39px;
+}
+
+.loader h1 {
+  font-size: clamp(44px, 10vw, 68px);
+  letter-spacing: .22em;
+  margin: 0 0 8px;
+  padding-left: .22em;
+  background: linear-gradient(90deg, #53f4df, #a78bfa, #ff73b7);
+  color: transparent;
+  background-clip: text;
+}
+
+.loader p {
+  color: #8d9abb;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  font-size: 10px;
+}
+
+.load-track {
+  height: 4px;
+  background: #1d2741;
+  border-radius: 9px;
+  margin-top: 28px;
+  overflow: hidden;
+}
+
+.load-track span {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--cyan), var(--violet));
+  animation: load 1.5s ease forwards;
+}
+
+@keyframes load {
+  to { width: 100%; }
+}
+
+/* LAYOUT */
+
+.shell {
+  width: min(1120px, 100% - 36px);
+  margin: auto;
+  padding: 25px 0 34px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 34px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 850;
+  letter-spacing: -.04em;
+}
+
+.brand-icon {
+  width: 43px;
+  height: 43px;
+  border-radius: 14px;
+  background: linear-gradient(140deg, var(--cyan), var(--violet));
+  display: grid;
+  place-items: center;
+  color: #09101e;
+  font-size: 23px;
+  box-shadow: 0 7px 25px #53f4df20;
+}
+
+.brand small {
+  display: block;
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: .16em;
+  margin-top: 3px;
+}
+
+.pill {
+  border: 1px solid var(--line);
+  border-radius: 99px;
+  padding: 9px 13px;
+  color: var(--muted);
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  background: #54e8a5;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #54e8a5;
+}
+
+/* BERANDA */
+
+.hero {
+  display: grid;
+  grid-template-columns: 1fr .95fr;
+  gap: 30px;
+  align-items: center;
+  margin: 10px 0 28px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  border: 1px solid #53f4df40;
+  color: var(--cyan);
+  background: #53f4df0c;
+  border-radius: 99px;
+  padding: 7px 11px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .13em;
+}
+
+.hero h2 {
+  font-size: clamp(42px, 6.3vw, 76px);
+  line-height: .98;
+  letter-spacing: -.075em;
+  margin: 20px 0 17px;
+  font-weight: 900;
+}
+
+.hero h2 span {
+  display: block;
+  background: linear-gradient(100deg, var(--cyan), #a5a0ff 58%, var(--pink));
+  color: transparent;
+  background-clip: text;
+}
+
+.hero p {
+  color: var(--muted);
+  line-height: 1.8;
+  max-width: 460px;
+  font-size: 14px;
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 11px;
+  margin-top: 25px;
+}
+
+.btn {
+  border: 0;
+  border-radius: 14px;
+  padding: 14px 20px;
+  font-size: 13px;
+  font-weight: 850;
+  transition: transform .2s, filter .2s;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+}
+
+.primary {
+  background: linear-gradient(110deg, var(--cyan), #9cefe6);
+  color: #07151a;
+  box-shadow: 0 10px 28px #53f4df25;
+}
+
+.secondary {
+  background: var(--panel2);
+  border: 1px solid var(--line);
+  color: var(--text);
+}
+
+/* ILUSTRASI NAGA */
+
+.art {
+  position: relative;
+  min-height: 310px;
+  border: 1px solid #8b9cf52e;
+  border-radius: 30px;
+  background: linear-gradient(145deg, #161f3c, #0d1429);
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 22px 65px #0002;
+}
+
+.art:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(#8e9bff10 1px, transparent 1px),
+    linear-gradient(90deg, #8e9bff10 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+
+.orb {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: #53f4df18;
+  filter: blur(12px);
+}
+
+.snake-art {
+  position: relative;
+  width: 270px;
+  height: 190px;
+  filter: drop-shadow(0 0 16px #53f4df44);
+}
+
+.snake-art i {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  border-radius: 15px;
+  background: linear-gradient(135deg, #53f4df, #42bfc6);
+  border: 2px solid #a7fff5;
+  box-shadow: inset -5px -6px 0 #087b8290;
+}
+
+.snake-art i:nth-child(1) {
+  left: 160px;
+  top: 22px;
+  background: linear-gradient(135deg, #b5a0ff, #8065e9);
+}
+
+.snake-art i:nth-child(2) { left: 118px; top: 34px; }
+.snake-art i:nth-child(3) { left: 80px; top: 61px; }
+.snake-art i:nth-child(4) { left: 47px; top: 94px; }
+.snake-art i:nth-child(5) { left: 72px; top: 132px; }
+.snake-art i:nth-child(6) { left: 115px; top: 135px; }
+.snake-art i:nth-child(7) { left: 155px; top: 112px; }
+
+.snake-art i:nth-child(1):after {
+  content: "••";
+  font-size: 15px;
+  letter-spacing: 2px;
+  color: #171333;
+  position: absolute;
+  left: 11px;
+  top: 7px;
+}
+
+.spark {
+  position: absolute;
+  color: var(--yellow);
+  font-size: 23px;
+  animation: float 3s ease-in-out infinite;
+}
+
+.s1 { top: 24%; left: 17%; }
+.s2 { right: 13%; bottom: 23%; animation-delay: .8s; }
+.s3 { right: 17%; top: 17%; font-size: 15px; animation-delay: 1.4s; }
+
+@keyframes float {
+  50% { transform: translateY(-10px) rotate(18deg); }
+}
+
+.art-label {
+  position: absolute;
+  bottom: 17px;
+  left: 19px;
+  color: #aab6d7;
+  font-size: 10px;
+  letter-spacing: .17em;
+}
+
+/* STATISTIK */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.stat {
+  border: 1px solid var(--line);
+  border-radius: 17px;
+  padding: 16px;
+  background: var(--panel);
+}
+
+.stat .icon { font-size: 18px; }
+
+.stat strong {
+  display: block;
+  font-size: 21px;
+  margin: 7px 0 3px;
+}
+
+.stat span {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.section-head { margin: 30px 0 13px; }
+.section-head h3 { font-size: 16px; margin: 0; }
+.section-head p { font-size: 11px; color: var(--muted); }
+
+.how-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.how {
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--panel);
+}
+
+.how b {
+  display: grid;
+  place-items: center;
+  width: 33px;
+  height: 33px;
+  border-radius: 11px;
+  background: #a78bfa18;
+  color: var(--violet);
+  margin-bottom: 13px;
+}
+
+.how h4 { font-size: 13px; margin: 0 0 6px; }
+
+.how p {
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--muted);
+  margin: 0;
+}
+
+.footer {
+  text-align: center;
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 28px;
+  letter-spacing: .1em;
+}
+
+.game-wrap { display: none; }
+.game-wrap.active { display: block; }
+.home-view.hidden { display: none; }
+
+/* ARENA GAME */
+
+.game-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.game-top h2 { margin: 0; font-size: 24px; }
+.game-top p { color: var(--muted); font-size: 12px; }
+
+.game-stats { display: flex; gap: 8px; }
+
+.score-box {
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: var(--panel);
+  min-width: 83px;
+}
+
+.score-box small {
+  display: block;
+  color: var(--muted);
+  font-size: 9px;
+  text-transform: uppercase;
+}
+
+.score-box strong { font-size: 19px; }
+
+.board-shell {
+  padding: 9px;
+  background: #10182b;
+  border: 1px solid #293655;
+  border-radius: 22px;
+  box-shadow: 0 22px 60px #0002;
+}
+
+.canvas-wrap {
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+  background: #0c1325;
+}
+
+.canvas-wrap canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 800 / 460;
+  touch-action: none;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: #080d1dbd;
+  backdrop-filter: blur(7px);
+  padding: 20px;
+  text-align: center;
+}
+
+.overlay.hide { display: none; }
+.overlay-card { max-width: 330px; }
+.overlay-card .big { font-size: 36px; }
+.overlay-card h3 { font-size: 27px; margin: 8px 0; }
+
+.overlay-card p {
+  color: #a0accb;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.game-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 13px;
+}
+
+.game-note {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.game-buttons { display: flex; gap: 8px; }
+
+.small-btn {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--text);
+  border-radius: 11px;
+  padding: 10px 13px;
+  font-size: 11px;
+  font-weight: 750;
+}
+
+/* KONTROL HP */
+
+.mobile-pad {
+  display: none;
+  grid-template-columns: repeat(3, 45px);
+  grid-template-rows: repeat(2, 40px);
+  gap: 5px;
+  justify-content: center;
+  margin: 17px auto 0;
+}
+
+.pad-btn {
+  border: 1px solid #394566;
+  border-radius: 10px;
+  background: #17223d;
+  color: #dce7ff;
+  font-size: 17px;
+}
+
+.pad-btn:nth-child(1) { grid-column: 2; }
+.pad-btn:nth-child(2) { grid-column: 1; grid-row: 2; }
+.pad-btn:nth-child(3) { grid-column: 2; grid-row: 2; }
+.pad-btn:nth-child(4) { grid-column: 3; grid-row: 2; }
+
+/* RESPONSIVE */
+
+@media (max-width: 760px) {
+  .shell { width: min(100% - 26px, 600px); padding-top: 17px; }
+  .hero { grid-template-columns: 1fr; gap: 22px; margin-top: 18px; }
+  .hero h2 { font-size: clamp(48px, 12vw, 70px); }
+  .art { min-height: 235px; }
+  .snake-art { transform: scale(.85); }
+  .stats { gap: 8px; }
+  .stat { padding: 12px; }
+  .stat strong { font-size: 18px; }
+  .how-grid { gap: 8px; }
+  .how { padding: 13px; }
+  .how p { font-size: 10px; }
+  .topbar { margin-bottom: 25px; }
+  .game-top { align-items: flex-start; flex-wrap: wrap; }
+  .game-stats { width: 100%; }
+  .score-box { flex: 1; }
+  .game-bottom { align-items: flex-start; flex-direction: column; }
+  .mobile-pad { display: grid; }
+}
+
+@media (max-width: 400px) {
+  .pill { font-size: 10px; padding: 8px; }
+  .how-grid { grid-template-columns: 1fr; }
+  .how { display: flex; gap: 12px; align-items: flex-start; }
+  .how b { flex-shrink: 0; margin: 0; }
+  .stats { grid-template-columns: 1fr 1fr; }
+  .stat:last-child { grid-column: span 2; }
+  .game-buttons { width: 100%; }
+  .small-btn { flex: 1; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOADING SCREEN DRT -->
+<div class="loader" id="loader">
+  <div class="load-inner">
+    <div class="logo-mark">🐉</div>
+    <h1>DRT</h1>
+    <p>Memuat dunia petualanganmu</p>
+    <div class="load-track"><span></span></div>
+  </div>
+</div>
+
+<div class="app">
+<main class="shell">
+
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-icon">🐉</div>
+    <div>ULAR NAGA<small>ARCADE NUSANTARA</small></div>
+  </div>
+  <div class="pill"><span class="dot"></span> GAME TRADISIONAL • REIMAGINED</div>
+</header>
+
+<!-- BERANDA -->
+<section class="home-view" id="homeView">
+  <div class="hero">
+    <div>
+      <div class="eyebrow">✦ Permainan klasik, energi baru</div>
+      <h2>Ular Naga<span>Petualangan!</span></h2>
+      <p>
+        Hidupkan kembali keseruan permainan tradisional Indonesia
+        dalam versi arcade modern. Pimpin barisan nagamu, kumpulkan
+        bintang, dan raih skor tertinggi!
+      </p>
+      <div class="actions">
+        <button class="btn primary" id="playBtn">▶ MULAI BERMAIN</button>
+        <button class="btn secondary" id="howBtn">Cara bermain ↗</button>
+      </div>
+    </div>
+
+    <div class="art">
+      <div class="orb"></div>
+      <div class="snake-art">
+        <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+      </div>
+      <span class="spark s1">✦</span>
+      <span class="spark s2">✧</span>
+      <span class="spark s3">✦</span>
+      <div class="art-label">✦ Petualangan dimulai di sini</div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <span class="icon">🌟</span>
+      <strong>Collect & Grow</strong>
+      <span>Kumpulkan bintang sebanyaknya</span>
+    </div>
+    <div class="stat">
+      <span class="icon">⚡</span>
+      <strong>Refleks Cepat</strong>
+      <span>Hindari tabrakan, tetap lincah</span>
+    </div>
+    <div class="stat">
+      <span class="icon">🏆</span>
+      <strong id="bestHome">0 POIN</strong>
+      <span>Rekor terbaikmu</span>
+    </div>
+  </div>
+
+  <div class="section-head" id="howSection">
+    <h3>Mulai petualanganmu</h3>
+    <p>Tiga langkah mudah untuk jadi legenda Ular Naga.</p>
+  </div>
+
+  <div class="how-grid">
+    <article class="how">
+      <b>01</b>
+      <div><h4>Pimpin barisan</h4>
+      <p>Gerakkan kepala naga dengan tombol panah atau WASD.</p></div>
+    </article>
+    <article class="how">
+      <b>02</b>
+      <div><h4>Ambil bintang</h4>
+      <p>Kumpulkan bintang bercahaya untuk menambah skor.</p></div>
+    </article>
+    <article class="how">
+      <b>03</b>
+      <div><h4>Jangan menabrak!</h4>
+      <p>Hindari dinding dan tubuh nagamu sendiri. Berapa skormu?</p></div>
+    </article>
+  </div>
+
+  <div class="footer">
+    DIBUAT DENGAN ✦ OLEH DRT • LESTARIKAN PERMAINAN NUSANTARA
+  </div>
+</section>
+
+<!-- ARENA -->
+<section class="game-wrap" id="gameView">
+  <div class="game-top">
+    <div>
+      <h2>Arena Naga <span style="color:var(--cyan)">✦</span></h2>
+      <p>Jangan berhenti bergerak. Kejar bintangnya!</p>
+    </div>
+    <div class="game-stats">
+      <div class="score-box"><small>Skor</small><strong id="score">0</strong></div>
+      <div class="score-box"><small>Rekor</small><strong id="best">0</strong></div>
+      <div class="score-box"><small>Kecepatan</small><strong id="speed">1×</strong></div>
+    </div>
+  </div>
+
+  <div class="board-shell">
+    <div class="canvas-wrap">
+      <canvas id="board" width="800" height="460"
+        aria-label="Arena permainan Ular Naga"></canvas>
+
+      <div class="overlay" id="overlay">
+        <div class="overlay-card">
+          <div class="big" id="overlayIcon">🐉</div>
+          <h3 id="overlayTitle">Siap, DRT?</h3>
+          <p id="overlayText">
+            Pimpin nagamu, kumpulkan bintang, dan pecahkan rekor.
+            Gunakan tombol panah atau WASD.
+          </p>
+          <button class="btn primary" id="overlayBtn">
+            MULAI PETUALANGAN →
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mobile-pad" aria-label="Kontrol arah">
+    <button class="pad-btn" data-dir="up" aria-label="Atas">↑</button>
+    <button class="pad-btn" data-dir="left" aria-label="Kiri">←</button>
+    <button class="pad-btn" data-dir="down" aria-label="Bawah">↓</button>
+    <button class="pad-btn" data-dir="right" aria-label="Kanan">→</button>
+  </div>
+
+  <div class="game-bottom">
+    <div class="game-note">
+      ⌨️ Panah / WASD untuk bergerak · Spasi untuk jeda<br>
+      Tip: belok lebih awal agar barisanmu tetap aman.
+    </div>
+    <div class="game-buttons">
+      <button class="small-btn" id="pauseBtn">Ⅱ Jeda</button>
+      <button class="small-btn" id="restartBtn">↻ Ulangi</button>
+      <button class="small-btn" id="homeBtn">⌂ Beranda</button>
+    </div>
+  </div>
+</section>
+
+</main>
+</div>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const loader = $('loader');
+
+  setTimeout(() => loader.classList.add('done'), 1650);
+
+  $('howBtn').onclick = () =>
+    $('howSection').scrollIntoView({
+      behavior: 'smooth',
+      block: 'center'
+    });
+
+  const home = $('homeView');
+  const game = $('gameView');
+  const canvas = $('board');
+  const ctx = canvas.getContext('2d');
+  const overlay = $('overlay');
+
+  let snake = [];
+  let dir = { x: 1, y: 0 };
+  let nextDir = { x: 1, y: 0 };
+  let food = { x: 10, y: 10 };
+  let score = 0;
+  let best = Number(localStorage.getItem('drtSnakeBest') || 0);
+  let running = false;
+  let paused = false;
+  let over = false;
+  let last = 0;
+  let acc = 0;
+  let step = 115;
+  let raf = 0;
+
+  const cell = 20;
+  const cols = 40;
+  const rows = 23;
+
+  $('bestHome').textContent = best + ' POIN';
+  $('best').textContent = best;
+
+  function rand(n) {
+    return Math.floor(Math.random() * n);
+  }
+
+  function spawnFood() {
+    let p;
+    do {
+      p = { x: rand(cols), y: rand(rows) };
+    } while (snake.some(s => s.x === p.x && s.y === p.y));
+
+    food = p;
+  }
+
+  function showOverlay(icon, title, txt, btn) {
+    $('overlayIcon').textContent = icon;
+    $('overlayTitle').textContent = title;
+    $('overlayText').textContent = txt;
+    $('overlayBtn').textContent = btn;
+    overlay.classList.remove('hide');
+  }
+
+  function reset() {
+    cancelAnimationFrame(raf);
+
+    snake = [
+      { x: 10, y: 11 },
+      { x: 9, y: 11 },
+      { x: 8, y: 11 },
+      { x: 7, y: 11 },
+      { x: 6, y: 11 }
+    ];
+
+    dir = { x: 1, y: 0 };
+    nextDir = { x: 1, y: 0 };
+    score = 0;
+    step = 115;
+    acc = 0;
+    over = false;
+    paused = false;
+    running = false;
+
+    $('score').textContent = '0';
+    $('speed').textContent = '1×';
+
+    spawnFood();
+    draw();
+
+    showOverlay(
+      '🐉',
+      'Siap, DRT?',
+      'Pimpin nagamu, kumpulkan bintang, dan pecahkan rekor. Gunakan tombol panah atau WASD.',
+      'MULAI PETUALANGAN →'
+    );
+  }
+
+  function start() {
+    if (over) reset();
+
+    running = true;
+    paused = false;
+    overlay.classList.add('hide');
+    last = performance.now();
+
+    cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(loop);
+  }
+
+  function pause() {
+    if (over || !running) return;
+
+    paused = true;
+    running = false;
+    cancelAnimationFrame(raf);
+
+    showOverlay(
+      'Ⅱ',
+      'Istirahat dulu',
+      'Nagamu sedang menunggu. Tekan lanjut untuk kembali ke arena.',
+      'LANJUTKAN →'
+    );
+  }
+
+  function end() {
+    running = false;
+    over = true;
+    cancelAnimationFrame(raf);
+
+    const newRecord = score > best;
+
+    if (newRecord) {
+      best = score;
+      localStorage.setItem('drtSnakeBest', best);
+      $('best').textContent = best;
+      $('bestHome').textContent = best + ' POIN';
+    }
+
+    showOverlay(
+      '💥',
+      'Game Over!',
+      `Skor kamu ${score} poin. ${
+        newRecord && score > 0
+          ? 'Rekor baru! Luar biasa!'
+          : 'Coba lagi dan lampaui rekor ' + best + ' poin!'
+      }`,
+      'MAIN LAGI ↻'
+    );
+  }
+
+  function change(x, y) {
+    if (x !== -dir.x || y !== -dir.y) {
+      nextDir = { x, y };
+    }
+  }
+
+  function tick() {
+    dir = nextDir;
+
+    const head = {
+      x: snake[0].x + dir.x,
+      y: snake[0].y + dir.y
+    };
+
+    const hitWall =
+      head.x < 0 || head.x >= cols ||
+      head.y < 0 || head.y >= rows;
+
+    const hitBody = snake.slice(0, -1).some(
+      s => s.x === head.x && s.y === head.y
+    );
+
+    if (hitWall || hitBody) {
+      end();
+      return;
+    }
+
+    snake.unshift(head);
+
+    if (head.x === food.x && head.y === food.y) {
+      score += 10;
+      step = Math.max(58, 115 - Math.floor(score / 30) * 5);
+
+      $('score').textContent = score;
+      $('speed').textContent = (115 / step).toFixed(1) + '×';
+
+      spawnFood();
+    } else {
+      snake.pop();
+    }
+  }
+
+  function draw() {
+    const w = canvas.width;
+    const h = canvas.height;
+
+    ctx.clearRect(0, 0, w, h);
+    ctx.fillStyle = '#0c1325';
+    ctx.fillRect(0, 0, w, h);
+
+    // Grid neon
+    ctx.strokeStyle = '#9baeff0b';
+    ctx.lineWidth = 1;
+
+    for (let x = 0; x <= w; x += cell) {
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, h);
+      ctx.stroke();
+    }
+
+    for (let y = 0; y <= h; y += cell) {
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(w, y);
+      ctx.stroke();
+    }
+
+    // Bintang
+    const fx = (food.x + .5) * cell;
+    const fy = (food.y + .5) * cell;
+
+    ctx.save();
+    ctx.shadowColor = '#ffd66b';
+    ctx.shadowBlur = 20;
+    ctx.fillStyle = '#ffd66b';
+    ctx.beginPath();
+
+    for (let i = 0; i < 10; i++) {
+      const r = i % 2 ? 5 : 10;
+      const a = -Math.PI / 2 + i * Math.PI / 5;
+      const x = fx + Math.cos(a) * r;
+      const y = fy + Math.sin(a) * r;
+
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+
+    ctx.closePath();
+    ctx.fill();
+    ctx.restore();
+
+    // Tubuh ular
+    snake.forEach((s, i) => {
+      const x = s.x * cell + 2;
+      const y = s.y * cell + 2;
+
+      const g = ctx.createLinearGradient(
+        x, y, x + cell, y + cell
+      );
+
+      if (i === 0) {
+        g.addColorStop(0, '#d0fff7');
+        g.addColorStop(1, '#53f4df');
+      } else {
+        g.addColorStop(0, i % 2 ? '#53f4df' : '#67d8dc');
+        g.addColorStop(1, '#338eac');
+      }
+
+      ctx.fillStyle = g;
+      ctx.shadowColor = i === 0 ? '#53f4df' : 'transparent';
+      ctx.shadowBlur = i === 0 ? 15 : 0;
+
+      ctx.beginPath();
+      ctx.roundRect(x, y, cell - 4, cell - 4, i === 0 ? 7 : 5);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Mata kepala ular
+      if (i === 0) {
+        ctx.fillStyle = '#10213a';
+
+        const ex = x + 9 +
+          (dir.x === -1 ? -3 : dir.x === 1 ? 3 : 0);
+
+        const ey = y + 7 +
+          (dir.y === -1 ? -2 : dir.y === 1 ? 2 : 0);
+
+        ctx.beginPath();
+        ctx.arc(ex, ey, 2, 0, Math.PI * 2);
+        ctx.arc(ex + 5, ey, 2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    });
+  }
+
+  function loop(t) {
+    if (!running) return;
+
+    const dt = Math.min(t - last, 200);
+    last = t;
+    acc += dt;
+
+    if (acc >= step) {
+      tick();
+      acc = 0;
+    }
+
+    draw();
+
+    if (running) {
+      raf = requestAnimationFrame(loop);
+    }
+  }
+
+  // Navigasi antarmuka
+  $('playBtn').onclick = () => {
+    home.classList.add('hidden');
+    game.classList.add('active');
+    reset();
+    start();
+
+    game.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+  };
+
+  $('overlayBtn').onclick = () => {
+    if (paused && !over) {
+      start();
+    } else {
+      if (over) reset();
+      start();
+    }
+  };
+
+  $('pauseBtn').onclick = () => {
+    if (running) {
+      pause();
+    } else if (paused) {
+      start();
+    }
+  };
+
+  $('restartBtn').onclick = () => {
+    reset();
+    start();
+  };
+
+  $('homeBtn').onclick = () => {
+    running = false;
+    cancelAnimationFrame(raf);
+
+    game.classList.remove('active');
+    home.classList.remove('hidden');
+
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
+  // Keyboard: panah dan WASD
+  window.addEventListener('keydown', e => {
+    const k = e.key.toLowerCase();
+
+    const map = {
+      arrowup: [0, -1],
+      w: [0, -1],
+      arrowdown: [0, 1],
+      s: [0, 1],
+      arrowleft: [-1, 0],
+      a: [-1, 0],
+      arrowright: [1, 0],
+      d: [1, 0]
+    };
+
+    if (map[k] && game.classList.contains('active')) {
+      e.preventDefault();
+      change(...map[k]);
+    }
+
+    if (k === ' ' && game.classList.contains('active')) {
+      e.preventDefault();
+
+      if (running) pause();
+      else if (paused) start();
+    }
+  });
+
+  // Tombol arah layar sentuh
+  document.querySelectorAll('[data-dir]').forEach(b => {
+    const dirs = {
+      up: [0, -1],
+      down: [0, 1],
+      left: [-1, 0],
+      right: [1, 0]
+    };
+
+    b.addEventListener('pointerdown', e => {
+      e.preventDefault();
+      change(...dirs[b.dataset.dir]);
+    });
+  });
+
+  // Tampilkan arena awal
+  reset();
+})();
+</script>
+
+</body>
+</html>
